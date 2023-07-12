@@ -7,11 +7,6 @@
   https://www.youtube.com/watch?v=jH8wJT5uHD8
 ---
 
-## 팀원 소개
-
-<img src="assets/team.PNG" title="team" alt="team" align="inline">
-
-
 ## **개발 환경 및 IDE**
 
 **Frontend**
@@ -23,8 +18,7 @@
 **Backend**
 
 - 언어: Java, SQL
-- 프레임워크: IntelliJ, MySQL
-  Java, Spring WebSocket, Spring Boot, Spring Data JPA, Gradle, IntelliJ IDEA, Redis, MySQL, OAuth 2.0 & Kakao Login
+- 프레임워크: Spring Boot, Spring Data JPA, Spring Kafka
 
 **Server**
 
