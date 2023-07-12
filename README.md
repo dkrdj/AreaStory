@@ -17,7 +17,7 @@
 
 **Backend**
 
-- 언어: Java, SQL
+- 언어: Java
 - 프레임워크: Spring Boot, Spring Data JPA, Spring Kafka
 
 **Server**
