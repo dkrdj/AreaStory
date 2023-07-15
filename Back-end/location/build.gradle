@@ -3,6 +3,8 @@ plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+    id 'nu.studer.jooq' version '6.0.1'  // gradle-jooq-plugin
+    id "io.franzbecker.gradle-lombok" version "3.0.0"
 }
 
 group = 'com.areastory'
@@ -42,7 +44,9 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     annotationProcessor "com.querydsl:querydsl-apt"
     implementation 'org.springframework.kafka:spring-kafka'
+
     implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    jooqGenerator('com.mysql:mysql-connector-j:8.0.31')
 
 }
 
@@ -70,4 +74,65 @@ compileQuerydsl {
 }
 jar {
     enabled = false
+}
+
+jooq {
+    version = '3.15.1'  // default (can be omitted)
+    edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
+
+    configurations {
+        main {  // name of the jOOQ configuration
+            generateSchemaSourceOnCompilation = true  // default (can be omitted)
+
+            generationTool {
+
+                logging = 'WARN' // TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+                onError = 'LOG'  // FAIL, LOG, SILENT
+
+                jdbc {
+                    driver = 'com.mysql.cj.jdbc.Driver'
+                    url = 'jdbc:mysql://localhost:3306/test'
+                    user = 'root'
+                    password = 'dltkdgus12'
+                    properties {
+                        property {
+                            key = 'ssl'
+                            value = 'false'
+                        }
+                    }
+                }
+
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    strategy {
+                        // org.jooq.codegen.KeepNamesGeneratorStrategy - DB 네이밍 유지: 언더바, 대소문자 등... 기본값은 PascalCaseNames
+                        name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                    }
+                    database {
+                        // https://www.jooq.org/doc/3.15/manual/code-generation/codegen-advanced/codegen-config-database/codegen-database-name/
+                        name = 'org.jooq.meta.mysql.MySQLDatabase'
+                        inputSchema = 'test'
+
+                        includes = '.*' // 정규표현식
+                        excludes = 'test_.* | temp_.*'
+                    }
+                    generate {
+                        generatedSerialVersionUID = 'CONSTANT'
+                        javaTimeTypes = true    // java.time.*
+
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                    }
+                    target {
+                        // packageName = 'nu.studer.sample'
+                        packageName = 'com.example.api.jooqgen'
+                        directory = 'build/generated-src/jooq/main'  // default (can be omitted)
+//                        directory = 'src/main/java'  // default (can be omitted)
+                    }
+                }
+            }
+        }
+    }
 }

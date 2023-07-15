@@ -1,8 +1,10 @@
 package com.areastory.location.db.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -15,7 +17,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @DynamicInsert
+@Setter
 @Table(name = "article"
 //        indexes = {
 //        @Index(name = "idx_location4", columnList = "daily_like_count"),
@@ -24,81 +28,20 @@ import java.time.LocalDateTime;
 //        @Index(name = "idx_location1", columnList = "dosi,sigungu,dongeupmyeon,daily_like_count")
 //}
 )
+@SuperBuilder
 public class Article extends Location {
     @Id
+    @Column(name = "article_id")
     private Long articleId;
+    @Column(name = "user_id")
     private Long userId;
-    @Column(length = 200)
+    @Column(length = 200, name = "image")
     private String image;
-    @Setter
     @Column(name = "daily_like_count")
     @ColumnDefault("0")
     private Long dailyLikeCount;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Setter
+    @Column(name = "public_yn")
     private Boolean publicYn;
-
-    public Article(Long articleId, Location location, Long userId, String image, Long dailyLikeCount, LocalDateTime createdAt, Boolean publicYn) {
-        super(location);
-        this.articleId = articleId;
-        this.userId = userId;
-        this.image = image;
-        this.dailyLikeCount = dailyLikeCount;
-        this.createdAt = createdAt;
-        this.publicYn = publicYn;
-    }
-
-    public static Builder articleBuilder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private Long articleId;
-        private Long userId;
-        private String image;
-        private Long dailyLikeCount;
-        private Location location;
-        private LocalDateTime createdAt;
-        private Boolean publicYn;
-
-        public Builder userId(Long userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Builder createdAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public Builder image(String image) {
-            this.image = image;
-            return this;
-        }
-
-        public Builder dailyLikeCount(Long dailyLikeCount) {
-            this.dailyLikeCount = dailyLikeCount;
-            return this;
-        }
-
-        public Builder location(Location location) {
-            this.location = location;
-            return this;
-        }
-
-        public Builder articleId(Long articleId) {
-            this.articleId = articleId;
-            return this;
-        }
-
-        public Builder publicYn(Boolean publicYn) {
-            this.publicYn = publicYn;
-            return this;
-        }
-
-        public Article build() {
-            return new Article(articleId, location, userId, image, dailyLikeCount, createdAt, publicYn);
-        }
-    }
 }

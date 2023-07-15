@@ -2,16 +2,17 @@ package com.areastory.location.db.repository.support;
 
 import com.areastory.location.db.entity.Article;
 import com.areastory.location.dto.common.LocationDto;
+import com.example.api.jooqgen.tables.records.ArticleRecord;
 import lombok.RequiredArgsConstructor;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.SelectUnionStep;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
+import static com.example.api.jooqgen.Tables.ARTICLE;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,11 +20,23 @@ public class ArticleRepositoryJooqImpl implements ArticleRepositoryJooq {
     private final DSLContext context;
     @Override
     public List<Article> getImage(List<LocationDto> locationList, Long userId) {
-        Result<Record> fetch = context.selectFrom(table("article"))
-                .where(field("dosi", String.class).eq("경기도"))
-                .orderBy(field("daily_like_count", Integer.class).desc())
-                .limit(1).fetch();
-        List<Article> map = fetch.map(o -> o.into(Article.class));
-        return map;
+        SelectUnionStep<ArticleRecord> unionQuery = null;
+        for (LocationDto locationDto : locationList) {
+            Condition whereQuery = ARTICLE.DOSI.eq(locationDto.getDosi());
+            if (locationDto.getSigungu() != null) {
+                whereQuery = whereQuery.and(ARTICLE.SIGUNGU.eq(locationDto.getSigungu()));
+            }
+            if (locationDto.getDongeupmyeon() != null) {
+                whereQuery = whereQuery.and(ARTICLE.DONGEUPMYEON.eq(locationDto.getDongeupmyeon()));
+            }
+            SelectUnionStep<ArticleRecord> query = context.selectFrom(ARTICLE)
+                    .where(whereQuery.and(ARTICLE.USER_ID.eq(userId)))
+                    .orderBy(ARTICLE.DAILY_LIKE_COUNT.desc())
+                    .limit(1);
+            unionQuery = (unionQuery == null) ? query : unionQuery.union(query);
+        }
+        Result<ArticleRecord> fetch = unionQuery.fetch();
+        List<Article> articles = unionQuery.fetchInto(Article.class);
+        return unionQuery.fetchInto(Article.class);
     }
 }

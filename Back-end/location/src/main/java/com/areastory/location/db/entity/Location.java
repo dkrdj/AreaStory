@@ -1,32 +1,35 @@
 package com.areastory.location.db.entity;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
-import javax.persistence.Index;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
 @Getter
 @MappedSuperclass
 @NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@SuperBuilder
 public class Location {
-    @Column(length = 10)
-    private String dosi;
-    @Column(length = 10)
-    private String sigungu;
-    @Column(length = 10)
-    private String dongeupmyeon;
+    @Column(length = 10, name = "dosi")
+    protected String dosi;
+    @Column(length = 10, name = "sigungu")
+    protected String sigungu;
+    @Column(length = 10, name = "dongeupmyeon")
+    protected String dongeupmyeon;
 
-    @Builder
-    public Location(String dosi, String sigungu, String dongeupmyeon) {
-        this.dosi = dosi;
-        this.sigungu = sigungu;
-        this.dongeupmyeon = dongeupmyeon;
+
+    public Location(Location location) {
+        this.dosi = location.dosi;
+        this.sigungu = location.sigungu;
+        this.dongeupmyeon = location.dongeupmyeon;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -39,12 +42,6 @@ public class Location {
     @Override
     public int hashCode() {
         return Objects.hash(dosi, sigungu, dongeupmyeon);
-    }
-
-    public Location(Location location) {
-        this.dosi = location.dosi;
-        this.sigungu = location.sigungu;
-        this.dongeupmyeon = location.dongeupmyeon;
     }
 
 }

@@ -3,7 +3,6 @@ package com.areastory.location.api.service.impl;
 import com.areastory.location.api.service.ArticleService;
 import com.areastory.location.api.service.LocationMap;
 import com.areastory.location.db.entity.Article;
-import com.areastory.location.db.entity.Location;
 import com.areastory.location.db.repository.ArticleRepository;
 import com.areastory.location.dto.common.ArticleKafkaDto;
 import com.areastory.location.dto.common.LocationDto;
@@ -27,12 +26,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void addArticle(ArticleKafkaDto articleKafkaDto) {
 
-        Location location = Location.builder()
-                .dosi(articleKafkaDto.getDosi())
-                .sigungu(articleKafkaDto.getSigungu())
-                .dongeupmyeon(articleKafkaDto.getDongeupmyeon())
-                .build();
-
         LocationDto DongeupmyeonDto = new LocationDto(articleKafkaDto.getDosi(), articleKafkaDto.getSigungu(), articleKafkaDto.getDongeupmyeon());
         putMap(DongeupmyeonDto, articleKafkaDto);
 
@@ -42,13 +35,15 @@ public class ArticleServiceImpl implements ArticleService {
         LocationDto DosiDto = new LocationDto(articleKafkaDto.getDosi());
         putMap(DosiDto, articleKafkaDto);
 
-        Article article = Article.articleBuilder()
+        Article article = Article.builder()
                 .articleId(articleKafkaDto.getArticleId())
                 .userId(articleKafkaDto.getUserId())
                 .image(articleKafkaDto.getThumbnail())
                 .dailyLikeCount(articleKafkaDto.getDailyLikeCount())
                 .createdAt(articleKafkaDto.getCreatedAt())
-                .location(location)
+                .dosi(articleKafkaDto.getDosi())
+                .sigungu(articleKafkaDto.getSigungu())
+                .dongeupmyeon(articleKafkaDto.getDongeupmyeon())
                 .publicYn(articleKafkaDto.getPublicYn())
                 .build();
         articleRepository.save(article);
