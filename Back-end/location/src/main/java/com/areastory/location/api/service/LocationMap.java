@@ -25,7 +25,7 @@ public class LocationMap {
     }
 
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         //모든 지역의 article중 가장 좋아요가 높은 거를 넣어야함
         //sql로 동단위까지 groupby시킨걸 불러옴

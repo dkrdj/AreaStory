@@ -120,7 +120,6 @@ public class ArticleRepositorySupportImpl implements ArticleRepositorySupport {
     }
 
 
-    @Override
     public List<Article> getImage(List<LocationDto> locationList, Long userId) {
         if (locationList.size() == 0) {
             return null;

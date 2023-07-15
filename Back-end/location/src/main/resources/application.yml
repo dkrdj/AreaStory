@@ -20,9 +20,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      password: ${DB_PASSWORD}
-      username: ${DB_USER}
-    url: ${DB_URL}
+      password: dltkdgus12
+      username: root
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&serverTimezone=UTC
 
   mvc:
     pathmatch:

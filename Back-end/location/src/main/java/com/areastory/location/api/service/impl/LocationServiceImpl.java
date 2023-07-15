@@ -33,6 +33,7 @@ public class LocationServiceImpl implements LocationService {
         if (locationDto.getDongeupmyeon() != null) {
             return articleRepository.getImage(locationList, userId).stream().map(this::toDongResp).collect(Collectors.toList());
         } else if (locationDto.getSigungu() != null) {
+            List<Article> image = articleRepository.getImage(locationList, userId);
             return articleRepository.getImage(locationList, userId).stream().map(this::toSigunguResp).collect(Collectors.toList());
         } else {
             return articleRepository.getImage(locationList, userId).stream().map(this::toDosiResp).collect(Collectors.toList());

@@ -17,7 +17,4 @@ public interface ArticleRepositorySupport {
     List<LocationResp> getInitSigungu();
 
     List<LocationResp> getInitDongeupmyeon();
-
-
-    List<Article> getImage(List<LocationDto> locationList, Long userId);
 }
