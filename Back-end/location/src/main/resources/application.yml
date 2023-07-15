@@ -22,7 +22,7 @@ spring:
     hikari:
       password: dltkdgus12
       username: root
-    url: jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&serverTimezone=UTC&sessionVariables=sql_mode=''
 
   mvc:
     pathmatch:

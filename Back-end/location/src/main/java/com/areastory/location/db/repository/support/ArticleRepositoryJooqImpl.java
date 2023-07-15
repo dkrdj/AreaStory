@@ -6,7 +6,6 @@ import com.example.api.jooqgen.tables.records.ArticleRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Result;
 import org.jooq.SelectUnionStep;
 import org.springframework.stereotype.Repository;
 
@@ -35,8 +34,6 @@ public class ArticleRepositoryJooqImpl implements ArticleRepositoryJooq {
                     .limit(1);
             unionQuery = (unionQuery == null) ? query : unionQuery.union(query);
         }
-        Result<ArticleRecord> fetch = unionQuery.fetch();
-        List<Article> articles = unionQuery.fetchInto(Article.class);
         return unionQuery.fetchInto(Article.class);
     }
 }
