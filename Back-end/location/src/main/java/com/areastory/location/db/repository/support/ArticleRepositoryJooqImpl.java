@@ -17,6 +17,7 @@ import static com.example.api.jooqgen.Tables.ARTICLE;
 @RequiredArgsConstructor
 public class ArticleRepositoryJooqImpl implements ArticleRepositoryJooq {
     private final DSLContext context;
+
     @Override
     public List<Article> getImage(List<LocationDto> locationList, Long userId) {
         SelectUnionStep<ArticleRecord> unionQuery = null;
